@@ -1,5 +1,6 @@
 # malla-universitaria.
 malla interactiva de mis ramos universitarios 
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -8,32 +9,19 @@ malla interactiva de mis ramos universitarios
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Malla Interactiva - Quinto y Sexto Semestre</h1>
-
-  <h2>Quinto Semestre</h2>
-  <div class="malla">
-    <div class="ramo" onclick="toggleAprobado(this)">Principios de Enfermería</div>
-    <div class="ramo" onclick="toggleAprobado(this)">Patología Cardiorrespiratoria</div>
-    <div class="ramo" onclick="toggleAprobado(this)">Neurología Clínica</div>
-    <div class="ramo" onclick="toggleAprobado(this)">Análisis de Movimiento 2</div>
-    <div class="ramo" onclick="toggleAprobado(this)">Fisiología del Esfuerzo</div>
-    <div class="ramo" onclick="toggleAprobado(this)">Traumatología y Ortopedia</div>
-    <div class="ramo" onclick="toggleAprobado(this)">Salud Pública y Epidemiología</div>
-    <div class="ramo" onclick="toggleAprobado(this)">Biostatística</div>
-    <div class="ramo" onclick="toggleAprobado(this)">Semiología y Quinésica</div>
-    <div class="ramo" onclick="toggleAprobado(this)">Biomecánica Ocupacional y Antropometría</div>
-    <div class="ramo" onclick="toggleAprobado(this)">Quinesiología Traumatológica 1</div>
-    <div class="ramo" onclick="toggleAprobado(this)">Ciclo Vital</div>
-  </div>
-
-  <h2>Sexto Semestre</h2>
-  <div class="malla">
-    <div class="ramo" onclick="toggleAprobado(this)">Quinesiología Cardiorrespiratoria 1</div>
-    <div class="ramo" onclick="toggleAprobado(this)">Psicomotricidad</div>
-    <div class="ramo" onclick="toggleAprobado(this)">Farmacología Aplicada a la Quinesiología</div>
-    <div class="ramo" onclick="toggleAprobado(this)">Fisioterapia</div>
-    <div class="ramo" onclick="toggleAprobado(this)">Quinesiología Traumática 2</div>
-    <div class="ramo" onclick="toggleAprobado(this)">Práctica Intermedia 1</div>
+  <h1>Malla Interactiva - Quinesiología</h1>
+  <div class="grid-container">
+    <div class="semestre">
+      <h2>5° Semestre</h2>
+      <div class="ramo" onclick="toggle('Principios de Enfermería')">Principios de Enfermería</div>
+      <!-- más ramos... -->
+    </div>
+    <div class="semestre">
+      <h2>6° Semestre</h2>
+      <div class="ramo" onclick="toggle('Quinesiología Cardiorrespiratoria 1')">Quinesiología Cardiorrespiratoria 1</div>
+      <!-- más ramos... -->
+    </div>
+    <!-- Agrega más semestres aquí -->
   </div>
 
   <script src="script.js"></script>
@@ -42,47 +30,70 @@ malla interactiva de mis ramos universitarios
 
 body {
   font-family: Arial, sans-serif;
-  background-color: #f7f7f7;
+  background: #f4f4f4;
+  padding: 20px;
   color: #333;
-  text-align: center;
-  padding: 30px;
 }
 
-h1 {
-  font-size: 28px;
-  margin-bottom: 10px;
-}
-
-h2 {
-  margin-top: 40px;
-  color: #0066cc;
-}
-
-.malla {
+h1 { text-align: center; margin-bottom: 30px; }
+.grid-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 15px;
-  margin: 20px 0;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+.semestre {
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 15px;
+}
+.semestre h2 {
+  margin-top: 0;
+  color: #005a9c;
 }
 
 .ramo {
-  background-color: white;
-  padding: 15px;
-  border: 2px solid #ddd;
-  border-radius: 10px;
+  margin: 6px 0;
+  padding: 8px;
+  border: 1px solid #bbb;
+  border-radius: 4px;
   cursor: pointer;
   transition: 0.2s;
 }
-
-.ramo:hover {
-  background-color: #e0e0e0;
-}
-
+.ramo:hover { background: #eaeaea; }
 .ramo.aprobado {
-  background-color: #c9f5d2;
+  background: #c6f7d0;
   border-color: #4caf50;
   text-decoration: line-through;
 }
-function toggleAprobado(element) {
-  element.classList.toggle("aprobado");
+
+const ramos = [
+  "Principios de Enfermería", "Patología Cardiorrespiratoria",
+  "Neurología Clínica", "Análisis de Movimiento 2",
+  "Fisiología del Esfuerzo", "Traumatología y Ortopedia",
+  "Salud Pública y Epidemiología", "Biostatística",
+  "Semiología y Quinésica", "Biomecánica Ocupacional y Antropometría",
+  "Quinesiología Traumatológica 1", "Ciclo Vital",
+  "Quinesiología Cardiorrespiratoria 1", "Psicomotricidad",
+  "Farmacología Aplicada a la Quinesiología", "Fisioterapia",
+  "Quinesiología Traumática 2", "Práctica Intermedia 1"
+];
+
+// Al cargar, aplicar estado guardado
+document.addEventListener('DOMContentLoaded', () => {
+  ramos.forEach(nombre => {
+    const elemento = Array.from(document.querySelectorAll('.ramo'))
+      .find(el => el.textContent.trim() === nombre);
+    if (elemento && localStorage.getItem(nombre) === 'true') {
+      elemento.classList.add('aprobado');
+    }
+  });
+});
+
+function toggle(nombre) {
+  const element = Array.from(document.querySelectorAll('.ramo'))
+    .find(el => el.textContent.trim() === nombre);
+  if (!element) return;
+  const isAprobado = element.classList.toggle('aprobado');
+  localStorage.setItem(nombre, isAprobado);
 }
